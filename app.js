@@ -20,7 +20,6 @@ app.controller("addCtrl",function($scope, $http, $location){
 		console.log($scope.register);
 		$http.post("http://localhost:3390/app/", $scope.register)
 			.success(function(data){
-				console.log(data);
 				if(data.msg === 'User Saved..!'){
 					$location.path('/index');
 				}
@@ -28,13 +27,6 @@ app.controller("addCtrl",function($scope, $http, $location){
 			.error(function(){
 				console.log("not found");
 			})
-		//console.log('lksdj',newUser.registerNewUser());
-		/*newUser.registerNewUser($scope.register)
-			.then(function(data){
-				console.log(data);
-			}, function(data){
-				console.log(data);
-			})*/
 	}
 
 })
@@ -54,7 +46,6 @@ app.controller("listCtrl",function($scope, $http, $location){
 	$scope.getUserData();
 
 	$scope.editUser = function(id){
-		console.log(id);
 		$location.path('/edit/'+id);
 	}
 
@@ -63,6 +54,7 @@ app.controller("listCtrl",function($scope, $http, $location){
 		$http.delete("http://localhost:3390/app/remove/" + id)
 				.success(function(data){
 					console.log(data);
+					$scope.getUserData();
 				})
 				.error(function(){
 					console.log("not found");
@@ -95,7 +87,9 @@ app.controller("editCtrl", function($scope, $http, $routeParams){
 		console.log('updtetet',$scope.register)
 		$http.put("http://localhost:3390/app/edit/" + id, $scope.register)
 			.success(function(data){
-				console.log(data);
+				if(data.msg === 'User Updated..!'){
+					$location.path('/index');
+				}
 			})
 			.error(function(){
 				console.log("not found");
@@ -103,22 +97,3 @@ app.controller("editCtrl", function($scope, $http, $routeParams){
 	}
 
 })
-/*app.factory('newUser', function($http, $q){
-	var service = {};
-		var defer = $q.defer();
-	service.registerNewUser = function(params){
-
-		$http.post("http://localhost:3390/app/")
-			.success(function(data){
-				defer.resolve(data);
-			})
-			.error(function(data){
-				console.log("not found");
-				defer.reject(data);
-			})
-	}
-
-	return defer.promise;
-	return service;
-})
-*/
